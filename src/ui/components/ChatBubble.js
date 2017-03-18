@@ -20,7 +20,7 @@ export default class ChatBubble extends Component {
 			return this.props.message.user;
 		}
 
-		return 'Tu';
+		return 'You';
 	}
 
 	renderImage() {
@@ -38,23 +38,35 @@ export default class ChatBubble extends Component {
 		return null;
 	}
 
+	renderButtons() {
+		if(this.props.self._id === this.props.message.user){
+			return (
+				<span>
+					<span
+						className="range edit"
+						onClick={() => this.props.onEditMessage(this.props.message)}>
+						edit
+					</span>
+
+					<span
+						className="range remove"
+						onClick={() => this.props.onRemoveMessage(this.props.message)}>
+						x
+					</span>
+				</span>
+			);
+		}
+
+		return null;
+	}
+
 	render() {
 		return (
 			<li className={this.messageType()}>
 				<div className="msg">
 					<div className="user">
 						{this.senderName()}
-						<span
-							className="range edit"
-							onClick={() => this.props.onEditMessage(this.props.message)}>
-							editar
-						</span>
-
-						<span
-							className="range remove"
-							onClick={() => this.props.onRemoveMessage(this.props.message)}>
-							x
-						</span>
+						{this.renderButtons()}
 					</div>
 					{this.renderImage()}
 					<p>{this.props.message.text}</p>
