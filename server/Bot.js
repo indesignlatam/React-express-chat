@@ -17,7 +17,7 @@ export default class Bot {
 			'bot': `How can i help you ${this.user}?`,
 			'homie': `Can i help you ${this.user}?`,
 			'help': `How can i assist you today ${this.user}?`,
-			'homie help': 'You can try saying: \nhello homie\hhi homie\hhow are you?\nbot\nhomie'
+			'homie help': 'You can try saying: hello homie, hi homie, how are you?, bot, homie'
 		};
 	}
 
