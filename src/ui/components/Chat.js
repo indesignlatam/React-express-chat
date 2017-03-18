@@ -16,11 +16,13 @@ export default class Chat extends Component {
 		}, 200);
 	}
 
-	componentDidUpdate() {
-		setTimeout(() => {
-			const chat = document.getElementById('chat');
-			chat.scrollTop = chat.scrollHeight;
-		}, 50);
+	componentDidUpdate(prevProps) {
+		if(this.props.messages !== prevProps.messages){
+			setTimeout(() => {
+				const chat = document.getElementById('chat');
+				chat.scrollTop = chat.scrollHeight;
+			}, 50);
+		}
 	}
 
 	loadMore() {
