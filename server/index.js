@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import { Server } from 'http';
 
 import Bot from './Bot.js';
+import Bot2 from './Bot2.js';
 import config from '../webpack.config.dev';
 import Channels from './api/Channels.js';
 import Messages from './api/Messages.js';
@@ -125,8 +126,8 @@ io.on('connection', (socket) => {
 				io.to(data.channel).emit('chat message', JSON.stringify(data));
 
 				// Very basic bot
-				const bot = new Bot({ message: data, io });
-				bot.reply();
+				const bot = new Bot2({ message: data, io });
+				// bot.reply();
 			}
 		});
 	});

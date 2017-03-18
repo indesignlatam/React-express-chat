@@ -15,6 +15,7 @@
     "mongoose": "^4.7.5",
     "react": "^15.3.1",
     "react-dom": "^15.4.0",
+    "rivescript": "^1.17.2",
     "semantic-ui-react": "^0.67.1",
     "socket.io": "^1.5.1",
     "sweetalert2": "^6.4.4"
