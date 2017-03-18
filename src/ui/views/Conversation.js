@@ -48,7 +48,7 @@ export default class Conversation extends Component {
 
 	editMessage({ _id }) {
 		swal({
-			title: 'Editar this message',
+			title: 'Edit this message',
 			input: 'text',
 			showCancelButton: true,
 			confirmButtonText: 'Send',
