@@ -30,6 +30,7 @@ export default class AuthLayout extends Component {
 						<Channels
 							user={this.props.user}
 							socket={this.props.socket}
+							selectedChannel={this.state.channel}
 							onChannelSelect={(channel) => this.setState({channel})}/>
 					</Grid.Column>
 

@@ -94,6 +94,7 @@ export default class Channels extends Component {
 								channel={channel}
 								all={this.state.all}
 								socket={this.props.socket}
+								selectedChannel={this.props.selectedChannel}
 								onChannelSelect={(channel) => this.props.onChannelSelect(channel)}/>
 						)
 					}
@@ -106,5 +107,6 @@ export default class Channels extends Component {
 Channels.propTypes = {
 	user: React.PropTypes.string,
 	socket: React.PropTypes.object,
+	selectedChannel: React.PropTypes.object,
 	onChannelSelect: React.PropTypes.func
 };

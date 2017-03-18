@@ -48,11 +48,19 @@ export default class ChannelListItem extends Component {
 		return null;
 	}
 
+	get isActive() {
+		if(this.props.selectedChannel && this.props.selectedChannel._id === this.props.channel._id){
+			return true;
+		}
+
+		return false;
+	}
+
 	render() {
 		const channel = this.props.channel;
 
 		return (
-			<List.Item key={channel._id}>
+			<List.Item key={channel._id} active={this.isActive}>
 				{this.renderJoinButton(channel)}
 
 				<List.Content onClick={(event) => this.goToChannel(event)}>
@@ -67,9 +75,10 @@ export default class ChannelListItem extends Component {
 
 
 ChannelListItem.propTypes = {
+	all: React.PropTypes.bool,
 	user: React.PropTypes.string,
 	channel: React.PropTypes.object,
-	all: React.PropTypes.bool,
 	onChannelSelect: React.PropTypes.func,
+	selectedChannel: React.PropTypes.object,
 	socket: React.PropTypes.object
 };
