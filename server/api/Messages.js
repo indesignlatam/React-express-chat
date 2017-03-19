@@ -40,16 +40,8 @@ export function create(data, callback = () => null) {
 
 export function update({ _id, text }, callback = () => null) {
 	// TODO: Validate params
-	const query = Messages.where({ _id });
-
-	query.findOne((error, message) => {
-		if(error){
-			callback(error, null);
-		}else{
-			message.update({ text }, (error, response) => {
-				callback(error, response);
-			});
-		}
+	Messages.findOneAndUpdate({ _id }, { $set: { text } }, { new: true }, (error, response) => {
+		callback(error, response);
 	});
 }
 

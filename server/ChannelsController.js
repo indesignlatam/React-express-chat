@@ -24,11 +24,11 @@ ChannelsController.post('/channels/create', (request, response) => {
 		participants: [request.body.user]
 	};
 
-	create(data, (error, docs) => {
+	create(data, (error, channel) => {
 		if(error){
 			response.json(error);
 		}else{
-			response.json(docs);
+			response.json(channel);
 		}
 	});
 });
@@ -37,11 +37,11 @@ ChannelsController.post('/channels/join', (request, response) => {
 	const _id = request.body.channel;
 	const userId = request.body.user;
 
-	join({ _id, userId }, (error, docs) => {
+	join({ _id, userId }, (error, channel) => {
 		if(error){
 			response.json(error);
 		}else{
-			response.json(docs);
+			response.json(channel);
 		}
 	});
 });

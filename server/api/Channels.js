@@ -32,31 +32,15 @@ export function create(data, callback = () => null) {
 
 export function update({ _id, data }, callback = () => null) {
 	// TODO: Validate params
-	const query = Channels.where({ _id });
-
-	query.findOne((error, channel) => {
-		if(error){
-			callback(error, null);
-		}else{
-			channel.update(data, (error, response) => {
-				callback(error, response);
-			});
-		}
+	Channels.findOneAndUpdate({ _id }, { $set: data }, { new: true }, (error, response) => {
+		callback(error, response);
 	});
 }
 
 export function join({ _id, userId }, callback = () => null) {
 	// TODO: Validate params
-	const query = Channels.where({ _id });
-
-	query.findOne((error, channel) => {
-		if(error){
-			callback(error, null);
-		}else{
-			channel.update({ $addToSet: { participants: userId } }, (error, response) => {
-				callback(error, response);
-			});
-		}
+	Channels.findOneAndUpdate({ _id }, { $addToSet: { participants: userId } }, { new: true }, (error, response) => {
+		callback(error, response);
 	});
 }
 
