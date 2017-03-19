@@ -43,16 +43,16 @@ export default class Conversation extends Component {
 			this.setState({messages});
 		});
 
-		this.props.socket.on('remove message', (_id) => {
-			const messages = this.state.messages;
-			remove(messages, (message) => message._id === _id);
-			this.setState({messages});
-		});
-
 		this.props.socket.on('edit message', (editedMessage) => {
 			const messages = this.state.messages;
 			const index = messages.findIndex((message) => message._id === editedMessage._id);
 			messages.splice(index, 1, editedMessage);
+			this.setState({messages});
+		});
+
+		this.props.socket.on('remove message', (_id) => {
+			const messages = this.state.messages;
+			remove(messages, (message) => message._id === _id);
 			this.setState({messages});
 		});
 	}

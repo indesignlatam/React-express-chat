@@ -11,11 +11,14 @@ export default class ChannelListItem extends Component {
 	}
 
 	joinChannel(event) {
+		event.persist();
 		event.preventDefault();
 
 		const { channel, user } = this.props;
 
 		ChannelsAPI.joinChannel({channel, user}).then((response) => {
+			this.props.onJoinChannel(response.data);
+			this.goToChannel(event);
 			swal('Congratulations', `You have joined ${response.data.name}`, 'success');
 		});
 	}
@@ -79,6 +82,7 @@ ChannelListItem.propTypes = {
 	all: React.PropTypes.bool,
 	user: React.PropTypes.string,
 	channel: React.PropTypes.object,
+	onJoinChannel: React.PropTypes.func,
 	onChannelSelect: React.PropTypes.func,
 	selectedChannel: React.PropTypes.object,
 	socket: React.PropTypes.object

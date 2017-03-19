@@ -51,6 +51,13 @@ export default class Channels extends Component {
 		}).catch(error => null);
 	}
 
+	onJoinChannel(newChannel) {
+		const {channels} = this.state;
+		const index = channels.findIndex((channel) => channel._id === newChannel._id);
+		channels.splice(index, 1, newChannel);
+		this.setState({channels});
+	}
+
 	toggleAllChannels(event) {
 		event.preventDefault();
 
@@ -108,6 +115,7 @@ export default class Channels extends Component {
 								all={this.state.all}
 								socket={this.props.socket}
 								selectedChannel={this.props.selectedChannel}
+								onJoinChannel={(channel) => this.onJoinChannel(channel)}
 								onChannelSelect={(channel) => this.props.onChannelSelect(channel)}/>
 						)
 					}
