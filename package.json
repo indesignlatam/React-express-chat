@@ -4,8 +4,7 @@
   "description": "the home like chat",
   "main": "index.js",
   "scripts": {
-    "start": "npm-run-all --parallel open:src",
-    "open:src": "babel-node server/index.js"
+    "start": "babel-node server/index.js"
   },
   "dependencies": {
     "axios": "^0.15.3",
@@ -36,14 +35,11 @@
     "eslint-plugin-react": "5.0.1",
     "eslint-watch": "2.1.11",
     "eventsource-polyfill": "0.9.6",
-    "expect": "1.19.0",
     "express": "4.13.4",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.8.5",
-    "jsdom": "8.5.0",
     "less": "^2.7.2",
     "less-loader": "^3.0.0",
-    "npm-run-all": "1.8.0",
     "react-addons-test-utils": "15.0.2",
     "semantic-ui": "^2.2.9",
     "style-loader": "0.13.1",
