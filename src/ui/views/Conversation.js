@@ -115,7 +115,18 @@ export default class Conversation extends Component {
 
 	render() {
 		if(!this.props.channel){
-			return null;
+			return (
+				<div>
+					<h2 onClick={(event) => this.openMenu(event)}>
+						<a 	className="hidden-large open-menu"
+							onClick={(event) => this.openMenu(event)}>
+							<Icon name="content"/>
+						</a>
+
+						Select a channel
+					</h2>
+				</div>
+			);
 		}
 
 		return (
