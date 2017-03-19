@@ -28,7 +28,7 @@ export default class Conversation extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.channel){
-			this.props.socket.emit('unsubscribe');
+			this.props.socket.emit('unsubscribe', {channel: this.props.channel});
 			this.props.socket.emit('subscribe', {channel: nextProps.channel._id, user: nextProps.user});
 
 			setTimeout(() => {
@@ -65,8 +65,15 @@ export default class Conversation extends Component {
 
 	getMessages(channel) {
 		if(channel){
-			MessagesAPI.getChannelMessages().then((response) => {
+			MessagesAPI.getChannelMessages({channel, user: this.props.user}).then((response) => {
 				this.setState({messages: response.data});
+			}).catch((error) => {
+				if(error.response){
+					const {message, reason} = error.response.data;
+					swal(message, reason, 'error');
+				}else{
+					swal('There was an error!', error.message, 'error');
+				}
 			});
 		}
 	}

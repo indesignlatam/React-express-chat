@@ -12,11 +12,25 @@ const schema = Schema({
 
 const Messages = mongoose.model('Messages', schema);
 
-export function getInChannel(channel, callback = () => null) {
+export function getInChannel({ channel, userId }, callback = () => null) {
 	// TODO: Validate params
-	// TODO: Check if user is a participant in the channel
-	Messages.find({ channel }, (error, docs) => {
-		callback(error, docs);
+	const query = Channels.where({ _id: channel, participants: { $in: [userId] } });
+
+	// Check if user is in the channel participants
+	query.findOne((error, channel) => {
+		if(error){
+			callback(error, null);
+		}else if(channel){
+			Messages.find({ channel: channel._id }, (error, docs) => {
+				callback(error, docs);
+			});
+		}else{
+			callback({
+				code: 401,
+				reason: 'You have no permission to access this channel messages.',
+				message: 'Permission error'
+			}, null);
+		}
 	});
 }
 
@@ -48,8 +62,8 @@ export function update({ _id, text }, callback = () => null) {
 
 export function remove(_id, callback = () => null) {
 	// TODO: Validate params
-	Messages.deleteOne({ _id }, (error) => {
-		callback(error);
+	Messages.findOneAndRemove({ _id }, (error, response) => {
+		callback(error, response);
 	});
 }
 

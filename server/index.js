@@ -10,6 +10,7 @@ import Bot2 from './Bot2.js';
 import config from '../webpack.config.dev';
 import ChannelsController from './ChannelsController.js';
 import Messages, { getInChannel, create, update, remove } from './api/Messages.js';
+import { isInChannel } from './api/Channels.js';
 
 
 const port = 3000;
@@ -17,7 +18,6 @@ const app = express();
 const server = Server(app);
 const io = socket(server);
 const compiler = webpack(config);
-let channel;
 
 app.use(require('webpack-dev-middleware')(compiler, {
 	publicPath: config.output.publicPath
@@ -35,19 +35,32 @@ app.get('/', (request, response) => {
 });
 
 // Return messages for the current channel
-app.get('/messages', (request, response) => {
-	getInChannel(channel, (error, docs) => {
-		response.json(docs) ;
+app.get('/messages/:channel', (request, response) => {
+	const { channel } = request.params;
+	const { userId } = request.query;
+
+	getInChannel({ channel, userId }, (error, docs) => {
+		if(error){
+			response.status(error.code || 500).send(error);
+		}else{
+			response.json(docs);
+		}
 	});
 });
 
 // Socket event listeners
 io.on('connection', (socket) => {
 	// Subscribe to messages of a channel
-	socket.on('subscribe', (data) => {
-		// TODO: Check if user is a participant in the channel
-		channel = data.channel;
-		socket.join(channel);
+	socket.on('subscribe', ({ channel, user }) => {
+		const userId = user;
+
+		isInChannel({ channel, userId }, (error, response) => {
+			if(error){
+				return error;
+			}else if(response){
+				socket.join(channel);
+			}
+		});
 	});
 
 	// Listen on new messages
@@ -79,17 +92,17 @@ io.on('connection', (socket) => {
 
 	// Listen for remove message event
 	socket.on('remove message', ({ _id }) => {
-		remove(_id, (error, response) => {
+		remove(_id, (error, message) => {
 			if(error){
 				return error;
 			}else{
-				io.to(channel).emit('remove message', _id);
+				io.to(message.channel).emit('remove message', message._id);
 			}
 		});
 	});
 
 	// Unsubscribe to a channel
-	socket.on('unsubscribe', () => {
+	socket.on('unsubscribe', ({ channel }) => {
 		socket.leave(channel);
 	});
 });

@@ -21,6 +21,13 @@ export function get({ userId, all }, callback = () => null) {
 	});
 }
 
+export function isInChannel({ channel, userId }, callback = () => null) {
+	// TODO: Validate params
+	Channels.findOne({ _id: channel, participants: userId }, (error, doc) => {
+		callback(error, doc);
+	});
+}
+
 export function create(data, callback = () => null) {
 	// TODO: Validate params
 	const channel = new Channels(data);
