@@ -20,12 +20,10 @@ export default class Conversation extends Component {
 		this.getMessages(this.props.channel);
 	}
 
-	componentDidMount() {
-
-	}
-
-	componentWillUpdate(nextProps, nextState) {
-		this.getMessages(nextProps.channel);
+	componentWillReceiveProps(nextProps) {
+		setTimeout(() => {
+			this.getMessages(nextProps.channel);
+		}, 50);
 	}
 
 	getMessages(channel) {
