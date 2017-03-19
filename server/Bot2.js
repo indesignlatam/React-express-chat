@@ -45,7 +45,7 @@ export default class Bot2 {
 				this.io.to(data.channel).emit('chat message', JSON.stringify(data));
 
 				return true;
-			}, Math.floor(Math.random() * 10000) + 2000);
+			}, Math.floor(Math.random() * 2000) + 500);
 		}else{
 			return false;
 		}
