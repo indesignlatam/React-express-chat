@@ -1,4 +1,5 @@
 import './styles/main.less';
+import '../semantic/dist/semantic.min.css';
 import 'sweetalert2/dist/sweetalert2.css';
 import 'babel-polyfill' ;
 import React from 'react';
