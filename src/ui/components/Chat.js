@@ -1,6 +1,5 @@
 import '../../styles/chat.less';
 import React, { Component } from 'react';
-import isEqual from 'lodash.isequal';
 
 import ChatBubble from './ChatBubble.js';
 
@@ -18,12 +17,10 @@ export default class Chat extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if(!isEqual(this.props.messages, prevProps.messages)){
-			setTimeout(() => {
-				const chat = document.getElementById('chat');
-				chat.scrollTop = chat.scrollHeight;
-			}, 50);
-		}
+		setTimeout(() => {
+			const chat = document.getElementById('chat');
+			chat.scrollTop = chat.scrollHeight;
+		}, 50);
 	}
 
 	loadMore() {

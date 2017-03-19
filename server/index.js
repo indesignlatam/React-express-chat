@@ -58,19 +58,20 @@ io.on('connection', (socket) => {
 			if(error){
 				return error;
 			}else{
+				io.to(message.channel).emit('chat message', JSON.stringify(message));
 				// Very basic bot
 				const bot = new Bot2({ message, io });
 			}
 		});
-
-		io.to(data.channel).emit('chat message', JSON.stringify(data));
 	});
 
 	// Listen for edit message event
 	socket.on('edit message', ({ _id, text }) => {
-		update({ _id, text }, (error, response) => {
+		update({ _id, text }, (error, message) => {
 			if(error){
 				return error;
+			}else{
+				io.to(message.channel).emit('edit message', message._id);
 			}
 		});
 	});
@@ -80,6 +81,8 @@ io.on('connection', (socket) => {
 		remove(_id, (error, response) => {
 			if(error){
 				return error;
+			}else{
+				io.to(channel).emit('remove message', _id);
 			}
 		});
 	});

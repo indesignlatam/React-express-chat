@@ -1,5 +1,6 @@
 import swal from 'sweetalert2';
 import React, { Component } from 'react';
+import remove from 'lodash.remove';
 
 import Chat from '../components/Chat';
 import TypeZone from '../components/TypeZone';
@@ -20,10 +21,39 @@ export default class Conversation extends Component {
 		this.getMessages(this.props.channel);
 	}
 
+	componentDidMount() {
+		this.setListeners();
+	}
+
 	componentWillReceiveProps(nextProps) {
-		setTimeout(() => {
-			this.getMessages(nextProps.channel);
-		}, 50);
+		if(nextProps.channel){
+			this.props.socket.emit('subscribe', {channel: nextProps.channel._id});
+
+			setTimeout(() => {
+				this.getMessages(nextProps.channel);
+			}, 50);
+		}
+	}
+
+	setListeners() {
+		this.props.socket.on('chat message', (message) => {
+			const messages = this.state.messages;
+			messages.push(JSON.parse(message));
+			this.setState({messages});
+		});
+
+		this.props.socket.on('remove message', (_id) => {
+			const messages = this.state.messages;
+			remove(messages, (message) => message._id === _id);
+			this.setState({messages});
+		});
+
+		this.props.socket.on('edit message', (editedMessage) => {
+			const messages = this.state.messages;
+			const index = messages.findIndex((message) => message._id === editedMessage._id);
+			messages.splice(index, 1, editedMessage);
+			this.setState({messages});
+		});
 	}
 
 	getMessages(channel) {
@@ -31,8 +61,6 @@ export default class Conversation extends Component {
 			MessagesAPI.getChannelMessages().then((response) => {
 				this.setState({messages: response.data});
 			});
-
-			this.props.socket.emit('subscribe', {channel: channel._id});
 		}
 	}
 
