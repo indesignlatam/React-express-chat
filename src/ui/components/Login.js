@@ -37,7 +37,7 @@ export default class Login extends Component {
 	render() {
 		return (
 			<Container className="login">
-				<h1 style={{textAlign: 'center'}}>
+				<h1 className="title">
 					Welcome to Homelike Chat
 				</h1>
 
@@ -51,7 +51,7 @@ export default class Login extends Component {
 									onChange={(event) => this.setName(event)}/>
 							</Form.Field>
 
-							<Button size={'massive'} fluid primary type="submit">
+							<Button size={'huge'} fluid primary type="submit">
 								Continue
 							</Button>
 						</Form>

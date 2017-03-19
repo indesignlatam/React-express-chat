@@ -76,12 +76,12 @@ export default class Channels extends Component {
 					Channels
 					<Button
 						circular icon="add"
-						color="green" size="large"
+						color="green" size="small"
 						onClick={(event) => this.createChannel(event)}/>
 
 					<Button
 						circular icon={this.state.all ? 'lock' : 'unlock'}
-						size="large"
+						size="small"
 						onClick={(event) => this.toggleAllChannels(event)}/>
 				</h2>
 
