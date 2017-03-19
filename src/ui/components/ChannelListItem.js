@@ -37,7 +37,7 @@ export default class ChannelListItem extends Component {
 			return (
 				<List.Content floated="right">
 					<Button
-						size="small"
+						size="mini"
 						onClick={(event) => this.joinChannel(event, channel)}>
 						Join
 					</Button>
