@@ -32,14 +32,16 @@ export default class Bot2 {
 			createdAt: new Date()
 		};
 
-		if(data.text){
+		if(data.text && data.text !== 'ERR: No Reply Matched'){
 			setTimeout(() => {
 				const message = new Messages(data);
+
 				message.save((error) => {
 					if(error){
 						return error;
 					}
 				});
+
 				this.io.to(data.channel).emit('chat message', JSON.stringify(data));
 
 				return true;
