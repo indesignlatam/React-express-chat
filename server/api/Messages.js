@@ -1,5 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 
+import Channels from './Channels.js';
+
 
 const schema = Schema({
 	user: String,
@@ -8,4 +10,54 @@ const schema = Schema({
 	createdAt: Date
 });
 
-export default mongoose.model('Messages', schema);
+const Messages = mongoose.model('Messages', schema);
+
+export function getInChannel(channel, callback = () => null) {
+	// TODO: Validate params
+	Messages.find({ channel }, (error, docs) => {
+		callback(error, docs);
+	});
+}
+
+export function create(data, callback = () => null) {
+	// TODO: Validate params
+	const query = Channels.where({ _id: data.channel, participants: { $in: [data.user] } });
+
+	// Check if user is in the channel participants
+	query.findOne((error, channel) => {
+		if(error){
+			callback(error, null);
+		}else if(channel){
+			// Create message
+			const message = new Messages(data);
+
+			message.save((error, response) => {
+				callback(error, response);
+			});
+		}
+	});
+}
+
+export function update({ _id, text }, callback = () => null) {
+	// TODO: Validate params
+	const query = Messages.where({ _id });
+
+	query.findOne((error, message) => {
+		if(error){
+			callback(error, null);
+		}else{
+			message.update({ text }, (error, response) => {
+				callback(error, response);
+			});
+		}
+	});
+}
+
+export function remove(_id, callback = () => null) {
+	// TODO: Validate params
+	Messages.deleteOne({ _id }, (error) => {
+		callback(error);
+	});
+}
+
+export default Messages;

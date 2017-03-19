@@ -8,8 +8,8 @@ import { Server } from 'http';
 
 import Bot2 from './Bot2.js';
 import config from '../webpack.config.dev';
-import Channels from './api/Channels.js';
-import Messages from './api/Messages.js';
+import ChannelsController from './ChannelsController.js';
+import Messages, { getInChannel, create, update, remove } from './api/Messages.js';
 
 
 const port = 3000;
@@ -17,13 +17,16 @@ const app = express();
 const server = Server(app);
 const io = socket(server);
 const compiler = webpack(config);
-var channel;
+let channel;
 
 app.use(require('webpack-dev-middleware')(compiler, {
 	publicPath: config.output.publicPath
 }));
 app.use(require('webpack-hot-middleware')(compiler));
 app.use(bodyParser.json());
+
+// Controllers
+app.use(ChannelsController);
 
 
 // Return the index.html file
@@ -33,64 +36,10 @@ app.get('/', (request, response) => {
 
 // Return messages for the current channel
 app.get('/messages', (request, response) => {
-	Messages.find({ channel }, (error, docs) => {
+	getInChannel(channel, (error, docs) => {
 		response.json(docs) ;
 	});
 });
-
-// Get all channels
-app.get('/channels', (request, response) => {
-	const user = request.query.user;
-	const all = request.query.all || false;
-
-	let query = { participants: user };
-
-	if(all === 'true'){
-		query = {};
-	}
-
-	Channels.find(query, (error, docs) => {
-		response.json(docs);
-	});
-});
-
-app.post('/channels/create', (request, response) => {
-	const data = {
-		name: request.body.name,
-		participants: [request.body.user]
-	};
-
-	const channel = new Channels(data);
-
-	channel.save((error) => {
-		if(error){
-			return error;
-		}
-	});
-
-	response.json(channel);
-});
-
-app.post('/channels/join', (request, response) => {
-	const _id = request.body.channel;
-	const user = request.body.user;
-
-	const query = Channels.where({ _id, participants: { $nin: [user] } });
-	query.findOne((error, channel) => {
-		if(error){
-			return error;
-		}else if(channel){
-			channel.update({ $addToSet: { participants: user } }, (error) => {
-				if(error){
-					return error;
-				}else{
-					response.json(channel);
-				}
-			});
-		}
-	});
-});
-
 
 // Socket event listeners
 io.on('connection', (socket) => {
@@ -101,59 +50,36 @@ io.on('connection', (socket) => {
 	});
 
 	// Listen on new messages
-	socket.on('chat message', (messageData) => {
-		const query = Channels.where({ _id: messageData.channel, participants: { $in: [messageData.user] } });
-		query.findOne((error, channel) => {
+	socket.on('chat message', (data) => {
+		data.text = data.text.trim();
+		data.createAt = new Date();
+
+		create(data, (error, message) => {
 			if(error){
 				return error;
-			}else if(channel){
-				// Only allow to send messages in a channel to users that have joined
-				const data = {
-					user: messageData.user,
-					text: messageData.text.trim(),
-					channel: messageData.channel,
-					createdAt: new Date()
-				};
-
-				// Create message
-				const message = new Messages(data);
-				message.save((error) => {
-					if(error){
-						return error;
-					}
-				});
-				io.to(data.channel).emit('chat message', JSON.stringify(data));
-
+			}else{
 				// Very basic bot
-				const bot = new Bot2({ message: data, io });
+				const bot = new Bot2({ message, io });
+			}
+		});
+
+		io.to(data.channel).emit('chat message', JSON.stringify(data));
+	});
+
+	// Listen for edit message event
+	socket.on('edit message', ({ _id, text }) => {
+		update({ _id, text }, (error, response) => {
+			if(error){
+				return error;
 			}
 		});
 	});
 
 	// Listen for remove message event
 	socket.on('remove message', ({ _id }) => {
-		// Remove message
-		Messages.deleteOne({ _id }, (error) => {
+		remove(_id, (error, response) => {
 			if(error){
 				return error;
-			}
-		});
-	});
-
-	// Listen for edit message event
-	socket.on('edit message', ({ _id, text }) => {
-		// Fin the message
-		const query = Messages.where({ _id });
-		query.findOne((error, message) => {
-			if(error){
-				return error;
-			}else{
-				// Update message
-				message.update({ text }, (error) => {
-					if(error){
-						return error;
-					}
-				});
 			}
 		});
 	});
