@@ -25,3 +25,30 @@
 + *
 % (can you please give me the email of your account)
 - Great, i will take a look in to the issue
+
+
++ (* looking for an apartment *|looking for an apartment *|* looking for an apartment)
+- In which city are you looking for?
+- Where would you like that apartment?
+
++ *
+% (* looking for an apartment *|looking for an apartment *|* looking for an apartment)
+- <set city=<formal>><get city> is a great choice.
+- <set city=<formal>><get city> is very nice.
+- <set city=<formal>><get city> is an excellent choice.
+
+
++ (help|help *)
+- How can i help you today?
+- How can i assist you today?
+
++ (* issue *|issue *|* issue)
+- Can you please tell me more about your issue?
+- Please describe more you issue?
+- Describe me the issue you are having, please.
+- Lets squash that bug.
+
++ (bot|* you a bot *)
+- How did you knew?
+- Who told you im a bot?
+- Yeah, you got me
