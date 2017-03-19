@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { Server } from 'http';
 
-import Bot from './Bot.js';
 import Bot2 from './Bot2.js';
 import config from '../webpack.config.dev';
 import Channels from './api/Channels.js';
@@ -127,7 +126,6 @@ io.on('connection', (socket) => {
 
 				// Very basic bot
 				const bot = new Bot2({ message: data, io });
-				// bot.reply();
 			}
 		});
 	});
