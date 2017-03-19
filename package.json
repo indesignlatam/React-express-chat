@@ -18,6 +18,7 @@
     "rivescript": "^1.17.2",
     "semantic-ui-react": "^0.67.1",
     "socket.io": "^1.5.1",
+    "socket.io-client": "^1.7.3",
     "sweetalert2": "^6.4.4"
   },
   "devDependencies": {

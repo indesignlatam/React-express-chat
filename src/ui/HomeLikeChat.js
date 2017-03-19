@@ -1,4 +1,4 @@
-/* global io */
+import io from 'socket.io-client';
 import React from 'react';
 
 import Login from './components/Login.js';
@@ -12,8 +12,14 @@ export default class HomeLikeChat extends React.Component {
 		this.state = {
 			user: null
 		};
+	}
 
-		this.socket = io();
+	componentWillMount() {
+		const socket = io('http://localhost:3000');
+
+		socket.on('connect', () => {
+			this.socket = socket;
+		});
 	}
 
 	renderContent(){
