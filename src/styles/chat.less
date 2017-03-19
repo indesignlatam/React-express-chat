@@ -8,7 +8,7 @@
 	padding: 0 0 50px 0;
 	margin-top: 0px;
 	margin-bottom: 15px;
-	height: ~'calc(100vh - 88px)';
+	height: ~'calc(100vh - 50px)';
 	overflow-y: scroll;
 
 	li {
@@ -267,6 +267,8 @@
 
 		.chat{
 			margin-bottom: 55px;
+			height: ~'calc(100vh - 50px)';
+
 
 			.notification {
 				font-size: 12px;
@@ -281,15 +283,19 @@
 
 		.msg {
 			p {
-				font-size: 11px;
+				font-size: 0.6rem;
 			}
 
 			.user {
-				font-size: 13px;
+				font-size: 0.6rem;
 			}
 
 			img {
 				width: 300px;
+			}
+
+			time {
+				font-size: 0.5rem;
 			}
 		}
 
@@ -310,14 +316,25 @@
 		.msg {
 			p {
 				max-width: 250px;
+				font-size: 0.6rem;
+			}
+
+			.user {
+				font-size: 0.6rem;
 			}
 
 			img {
 				width: 200px;
 			}
+
+			time {
+				font-size: 0.5rem;
+			}
 		}
 
 		.chat {
+			height: ~'calc(100vh - 70px)';
+
 			.notification {
 				font-size: 12px;
 				margin: 7px 0px;
