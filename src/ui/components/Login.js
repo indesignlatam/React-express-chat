@@ -41,8 +41,8 @@ export default class Login extends Component {
 					Welcome to Homelike Chat
 				</h1>
 
-				<Grid centered columns={3}>
-					<Grid.Column>
+				<Grid centered>
+					<Grid.Column mobile={16} largeScreen={6} widescreen={6}>
 						<Form onSubmit={(event) => this.login(event)}>
 							<Form.Field>
 								<label>Please tell us your name</label>
