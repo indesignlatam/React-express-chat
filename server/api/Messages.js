@@ -14,6 +14,7 @@ const Messages = mongoose.model('Messages', schema);
 
 export function getInChannel(channel, callback = () => null) {
 	// TODO: Validate params
+	// TODO: Check if user is a participant in the channel
 	Messages.find({ channel }, (error, docs) => {
 		callback(error, docs);
 	});

@@ -28,7 +28,8 @@ export default class Conversation extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.channel){
-			this.props.socket.emit('subscribe', {channel: nextProps.channel._id});
+			this.props.socket.emit('unsubscribe');
+			this.props.socket.emit('subscribe', {channel: nextProps.channel._id, user: nextProps.user});
 
 			setTimeout(() => {
 				this.getMessages(nextProps.channel);
@@ -37,6 +38,11 @@ export default class Conversation extends Component {
 	}
 
 	setListeners() {
+		// Usually channel is not set on mounting but just in case
+		if(this.props.channel){
+			this.props.socket.emit('subscribe', {channel: this.props.channel._id});
+		}
+
 		this.props.socket.on('chat message', (message) => {
 			const messages = this.state.messages;
 			messages.push(JSON.parse(message));

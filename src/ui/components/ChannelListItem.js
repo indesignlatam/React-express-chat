@@ -26,10 +26,7 @@ export default class ChannelListItem extends Component {
 	goToChannel(event){
 		event.preventDefault();
 
-		const { channel, user } = this.props;
-
-		this.props.socket.emit('unsubscribe');
-		this.props.socket.emit('subscribe', {channel: channel._id, user});
+		const { channel } = this.props;
 		this.props.onChannelSelect(channel);
 		document.getElementsByClassName('conversations')[0].classList.remove('active');
 	}

@@ -45,6 +45,7 @@ app.get('/messages', (request, response) => {
 io.on('connection', (socket) => {
 	// Subscribe to messages of a channel
 	socket.on('subscribe', (data) => {
+		// TODO: Check if user is a participant in the channel
 		channel = data.channel;
 		socket.join(channel);
 	});
