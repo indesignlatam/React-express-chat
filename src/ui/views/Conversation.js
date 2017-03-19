@@ -1,6 +1,7 @@
 import swal from 'sweetalert2';
 import React, { Component } from 'react';
 import remove from 'lodash.remove';
+import { Icon } from 'semantic-ui-react';
 
 import Chat from '../components/Chat';
 import TypeZone from '../components/TypeZone';
@@ -107,6 +108,11 @@ export default class Conversation extends Component {
 		}).catch(error => null);
 	}
 
+	openMenu(event) {
+		event.preventDefault();
+		document.getElementsByClassName('conversations')[0].classList.add('active');
+	}
+
 	render() {
 		if(!this.props.channel){
 			return null;
@@ -114,7 +120,14 @@ export default class Conversation extends Component {
 
 		return (
 			<div>
-				<h2>{this.props.channel.name}</h2>
+				<h2>
+					<a 	className="hidden-large open-menu"
+						onClick={(event) => this.openMenu(event)}>
+						<Icon name="content"/>
+					</a>
+
+					{this.props.channel.name}
+				</h2>
 
 				<Chat
 					self={{_id: this.props.user}}

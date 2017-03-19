@@ -1,5 +1,6 @@
 @import "colours.less";
 @import "channels.less";
+@import "messages.less";
 
 
 body {
@@ -7,17 +8,6 @@ body {
 	padding: 0;
 	margin: 0;
 	background-color: @backgroundDark !important;
-}
-
-.messages {
-	background-color: @backgroundDark;
-	padding-left: 0 !important;
-
-	h2 {
-		padding: 10px 20px;
-		color: @textContrast;
-		background-color: @backgroundDarker;
-	}
 }
 
 
@@ -47,15 +37,5 @@ body {
 
 	.ui.grid {
 		margin: 0 !important;
-	}
-
-	.messages {
-		height: 100vh;
-	}
-
-	.messages.active {
-		.typezone {
-			position: fixed !important;
-		}
 	}
 }
