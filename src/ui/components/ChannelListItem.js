@@ -28,6 +28,7 @@ export default class ChannelListItem extends Component {
 		this.props.socket.emit('unsubscribe');
 		this.props.socket.emit('subscribe', {channel: channel._id, user});
 		this.props.onChannelSelect(channel);
+		document.getElementsByClassName('conversations')[0].classList.remove('active');
 	}
 
 	renderJoinButton(channel) {

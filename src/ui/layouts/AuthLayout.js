@@ -24,9 +24,11 @@ export default class AuthLayout extends Component {
 
 	render() {
 		return (
-			<div style={{height: '100vh'}}>
+			<div style={{height: '100vh'}} className="chat-layout">
 				<Grid>
-					<Grid.Column width={4} className="conversations">
+					<Grid.Column
+						width={4} largeScreen={4} widescreen={4} mobile={16}
+						className="conversations">
 						<Channels
 							user={this.props.user}
 							socket={this.props.socket}
@@ -34,7 +36,9 @@ export default class AuthLayout extends Component {
 							onChannelSelect={(channel) => this.setState({channel})}/>
 					</Grid.Column>
 
-					<Grid.Column width={12} className="messages">
+					<Grid.Column
+						width={12} largeScreen={12} widescreen={12} mobile={16}
+						className="messages">
 						<Conversation
 							user={this.props.user}
 							socket={this.props.socket}

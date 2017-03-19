@@ -1,4 +1,5 @@
 @import "colours.less";
+@import "channels.less";
 
 
 body {
@@ -19,39 +20,42 @@ body {
 	}
 }
 
-.conversations {
-	background-color: @backgroundDarker;
 
-	h2 {
-		padding: 10px 20px;
-		color: @textContrast;
+@media only screen and (min-device-width: 750px) {
+	.hidden-large {
+		display: none !important;
+	}
+}
 
-		.icon {
-			float: right;
-			margin-top: 2px;
+
+@media only screen and (max-device-width: 750px) {
+	html {
+		font-size: 25px !important;
+		line-height: 35px !important;
+	}
+
+	.hidden-small {
+		display: none !important;
+	}
+
+	.chat-layout {
+		.column {
+			padding: 0 !important;
+			margin: 0 !important;
 		}
 	}
 
-	.list {
-		height: ~'calc(100vh - 80px)';
-		overflow-y: scroll;
+	.ui.grid {
+		margin: 0 !important;
+	}
 
-		.item {
-			padding: 5px 20px !important;
-			margin-bottom: 5px;
-			cursor: pointer;
+	.messages {
+		height: 100vh;
+	}
 
-			.content .header {
-				color: @textContrast;
-			}
-		}
-
-		.item.active {
-			font-size: 1.1em;
-
-			.content .header {
-				color: white !important;
-			}
+	.messages.active {
+		.typezone {
+			position: fixed !important;
 		}
 	}
 }

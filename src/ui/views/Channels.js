@@ -69,17 +69,30 @@ export default class Channels extends Component {
 		});
 	}
 
+	closeMenu(event) {
+		event.preventDefault();
+		document.getElementsByClassName('conversations')[0].classList.remove('active');
+	}
+
 	render() {
 		return (
 			<div>
 				<h2>
+					<a 	className="hidden-large close"
+						onClick={(event) => this.closeMenu(event)}>
+						<Icon name="remove"/>
+					</a>
+
 					Channels
+
 					<Button
+						className="hidden-small"
 						circular icon="add"
 						color="green" size="small"
 						onClick={(event) => this.createChannel(event)}/>
 
 					<Button
+						className="hidden-small"
 						circular icon={this.state.all ? 'lock' : 'unlock'}
 						size="small"
 						onClick={(event) => this.toggleAllChannels(event)}/>
@@ -99,6 +112,18 @@ export default class Channels extends Component {
 						)
 					}
 				</List>
+
+				<div className="footer hidden-large">
+					<Button
+						icon="add"
+						color="green" size="small"
+						onClick={(event) => this.createChannel(event)}/>
+
+					<Button
+						icon={this.state.all ? 'lock' : 'unlock'}
+						size="small"
+						onClick={(event) => this.toggleAllChannels(event)}/>
+				</div>
 			</div>
 		);
 	}
