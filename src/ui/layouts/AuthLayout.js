@@ -27,7 +27,8 @@ export default class AuthLayout extends Component {
 			<div style={{height: '100vh'}} className="chat-layout">
 				<Grid>
 					<Grid.Column
-						width={4} largeScreen={4} widescreen={4} mobile={16}
+						width={4} largeScreen={4} widescreen={4} computer={4}
+						tablet={4} mobile={16}
 						className="conversations">
 						<Channels
 							user={this.props.user}
@@ -37,7 +38,8 @@ export default class AuthLayout extends Component {
 					</Grid.Column>
 
 					<Grid.Column
-						width={12} largeScreen={12} widescreen={12} mobile={16}
+						width={12} largeScreen={12} widescreen={12} computer={12}
+						tablet={12} mobile={16}
 						className="messages">
 						<Conversation
 							user={this.props.user}
