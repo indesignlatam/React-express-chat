@@ -21,9 +21,9 @@ export function get({ userId, all }, callback = () => null) {
 	});
 }
 
-export function isInChannel({ channel, userId }, callback = () => null) {
+export function isInChannel({ channelId, userId }, callback = () => null) {
 	// TODO: Validate params
-	Channels.findOne({ _id: channel, participants: userId }, (error, doc) => {
+	Channels.findOne({ _id: channelId, participants: userId }, (error, doc) => {
 		callback(error, doc);
 	});
 }

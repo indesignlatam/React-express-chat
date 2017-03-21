@@ -8,7 +8,7 @@ export default class ChatBubble extends Component {
 	}
 
 	messageType() {
-		if(this.props.self._id === this.props.message.user){
+		if(this.props.self._id === this.props.message.user._id){
 			return 'self';
 		}
 
@@ -16,8 +16,8 @@ export default class ChatBubble extends Component {
 	}
 
 	senderName() {
-		if(this.props.self._id !== this.props.message.user){
-			return this.props.message.user;
+		if(this.props.self._id !== this.props.message.user._id){
+			return this.props.message.user.name || this.props.message.user;
 		}
 
 		return 'You';
@@ -39,7 +39,7 @@ export default class ChatBubble extends Component {
 	}
 
 	renderButtons() {
-		if(this.props.self._id === this.props.message.user){
+		if(this.props.self._id === this.props.message.user._id){
 			return (
 				<span>
 					<span

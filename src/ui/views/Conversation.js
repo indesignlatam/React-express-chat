@@ -27,9 +27,13 @@ export default class Conversation extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		if(nextProps.channel !== this.props.channel){
+			this.setState({messages: []});
+		}
+
 		if(nextProps.channel){
-			this.props.socket.emit('unsubscribe', {channel: this.props.channel});
-			this.props.socket.emit('subscribe', {channel: nextProps.channel._id, user: nextProps.user});
+			this.props.socket.emit('unsubscribe', {channelId: nextProps.channel._id});
+			this.props.socket.emit('subscribe', {channelId: nextProps.channel._id, userId: nextProps.user._id});
 
 			setTimeout(() => {
 				this.getMessages(nextProps.channel);
@@ -40,7 +44,7 @@ export default class Conversation extends Component {
 	setListeners() {
 		// Usually channel is not set on mounting but just in case
 		if(this.props.channel){
-			this.props.socket.emit('subscribe', {channel: this.props.channel._id});
+			this.props.socket.emit('subscribe', {channelId: this.props.channel._id, userId: this.props.user._id});
 		}
 
 		this.props.socket.on('chat message', (message) => {
@@ -52,6 +56,7 @@ export default class Conversation extends Component {
 		this.props.socket.on('edit message', (editedMessage) => {
 			const messages = this.state.messages;
 			const index = messages.findIndex((message) => message._id === editedMessage._id);
+			editedMessage = JSON.parse(editedMessage);
 			messages.splice(index, 1, editedMessage);
 			this.setState({messages});
 		});
@@ -65,7 +70,7 @@ export default class Conversation extends Component {
 
 	getMessages(channel) {
 		if(channel){
-			MessagesAPI.getChannelMessages({channel, user: this.props.user}).then((response) => {
+			MessagesAPI.getChannelMessages({channelId: channel._id, userId: this.props.user._id}).then((response) => {
 				this.setState({messages: response.data});
 			}).catch((error) => {
 				if(error.response){
@@ -117,7 +122,7 @@ export default class Conversation extends Component {
 			cancelButtonText: 'No, cancel!',
 			allowOutsideClick: false
 		}).then(() => {
-			this.props.socket.emit('remove message', { _id, user: this.props.user });
+			this.props.socket.emit('remove message', { _id, userId: this.props.user._id });
 		}).catch(error => null);
 	}
 
@@ -154,7 +159,7 @@ export default class Conversation extends Component {
 				</h2>
 
 				<Chat
-					self={{_id: this.props.user}}
+					self={this.props.user}
 					hasMore={false}
 					messages={this.state.messages}
 					loadMoreText={'Load previous messages'}
@@ -171,7 +176,7 @@ export default class Conversation extends Component {
 }
 
 Conversation.propTypes = {
-	user: React.PropTypes.string,
+	user: React.PropTypes.object,
 	channel: React.PropTypes.object,
 	socket: React.PropTypes.object
 };

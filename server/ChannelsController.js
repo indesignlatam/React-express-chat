@@ -5,9 +5,8 @@ import Channels, { get, create, join, remove } from './api/Channels.js';
 const ChannelsController = express();
 
 // Get all channels
-ChannelsController.get('/channels', (request, response) => {
-	const userId = request.query.user;
-	const all = request.query.all;
+ChannelsController.get('/', (request, response) => {
+	const { userId, all } = request.query;
 
 	get({ userId, all }, (error, docs) => {
 		if(error){
@@ -18,10 +17,10 @@ ChannelsController.get('/channels', (request, response) => {
 	});
 });
 
-ChannelsController.post('/channels/create', (request, response) => {
+ChannelsController.post('/create', (request, response) => {
 	const data = {
 		name: request.body.name,
-		participants: [request.body.user]
+		participants: [request.body.userId]
 	};
 
 	create(data, (error, channel) => {
@@ -33,9 +32,9 @@ ChannelsController.post('/channels/create', (request, response) => {
 	});
 });
 
-ChannelsController.post('/channels/join', (request, response) => {
-	const _id = request.body.channel;
-	const userId = request.body.user;
+ChannelsController.post('/join', (request, response) => {
+	const _id = request.body.channelId;
+	const userId = request.body.userId;
 
 	join({ _id, userId }, (error, channel) => {
 		if(error){
@@ -46,7 +45,7 @@ ChannelsController.post('/channels/join', (request, response) => {
 	});
 });
 
-ChannelsController.post('/channels/delete', (request, response) => {
+ChannelsController.post('/delete', (request, response) => {
 	const _id = request.body.channel;
 
 	remove({ _id }, (error, docs) => {

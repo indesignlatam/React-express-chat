@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 class MessagesAPI {
-	static getChannelMessages({channel, user}){
-		return axios.get(`/messages/${channel._id}`, { params: { userId: user } });
+	static getChannelMessages({channelId, userId}){
+		return axios.get(`/messages/${channelId}`, { params: { userId } });
 	}
 }
 

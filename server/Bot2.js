@@ -26,7 +26,7 @@ export default class Bot2 {
 
 	reply() {
 		const data = {
-			user: 'Home Bot',
+			user: { _id: 'siccdeebhydl365cef1c75ca', name: 'Home Bot' },
 			text: this.bot.reply(this.user, this.text),
 			channel: this.channel,
 			createdAt: new Date()

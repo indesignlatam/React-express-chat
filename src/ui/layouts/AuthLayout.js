@@ -54,6 +54,6 @@ export default class AuthLayout extends Component {
 
 
 AuthLayout.propTypes = {
-	user: React.PropTypes.string,
+	user: React.PropTypes.object,
 	socket: React.PropTypes.object
 };

@@ -14,9 +14,10 @@ export default class ChannelListItem extends Component {
 		event.persist();
 		event.preventDefault();
 
-		const { channel, user } = this.props;
+		const userId = this.props.user._id;
+		const channelId = this.props.channel._id;
 
-		ChannelsAPI.joinChannel({channel, user}).then((response) => {
+		ChannelsAPI.joinChannel({channelId, userId}).then((response) => {
 			this.props.onJoinChannel(response.data);
 			this.goToChannel(event);
 			swal('Congratulations', `You have joined ${response.data.name}`, 'success');
@@ -32,7 +33,7 @@ export default class ChannelListItem extends Component {
 	}
 
 	renderJoinButton(channel) {
-		const isParticipant = channel.participants.includes(this.props.user);
+		const isParticipant = channel.participants.includes(this.props.user._id);
 
 		if(this.props.all && !isParticipant){
 			return (
@@ -77,7 +78,7 @@ export default class ChannelListItem extends Component {
 
 ChannelListItem.propTypes = {
 	all: React.PropTypes.bool,
-	user: React.PropTypes.string,
+	user: React.PropTypes.object,
 	channel: React.PropTypes.object,
 	onJoinChannel: React.PropTypes.func,
 	onChannelSelect: React.PropTypes.func,

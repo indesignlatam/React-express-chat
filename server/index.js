@@ -8,6 +8,7 @@ import { Server } from 'http';
 
 import Bot2 from './Bot2.js';
 import config from '../webpack.config.dev';
+import UsersController from './UsersController.js';
 import ChannelsController from './ChannelsController.js';
 import Messages, { getInChannel, create, update, remove } from './api/Messages.js';
 import { isInChannel } from './api/Channels.js';
@@ -26,7 +27,8 @@ app.use(require('webpack-hot-middleware')(compiler));
 app.use(bodyParser.json());
 
 // Controllers
-app.use(ChannelsController);
+app.use(UsersController);
+app.use('/channels', ChannelsController);
 
 
 // Return the index.html file
@@ -51,23 +53,18 @@ app.get('/messages/:channel', (request, response) => {
 // Socket event listeners
 io.on('connection', (socket) => {
 	// Subscribe to messages of a channel
-	socket.on('subscribe', ({ channel, user }) => {
-		const userId = user;
-
-		isInChannel({ channel, userId }, (error, response) => {
+	socket.on('subscribe', ({ channelId, userId }) => {
+		isInChannel({ channelId, userId }, (error, response) => {
 			if(error){
 				return error;
 			}else if(response){
-				socket.join(channel);
+				socket.join(channelId);
 			}
 		});
 	});
 
 	// Listen on new messages
 	socket.on('chat message', (data) => {
-		data.text = data.text.trim();
-		data.createAt = new Date();
-
 		create(data, (error, message) => {
 			if(error){
 				return error;
@@ -85,7 +82,7 @@ io.on('connection', (socket) => {
 			if(error){
 				return error;
 			}else{
-				io.to(message.channel).emit('edit message', message._id);
+				io.to(message.channel).emit('edit message', JSON.stringify(message));
 			}
 		});
 	});
@@ -102,8 +99,8 @@ io.on('connection', (socket) => {
 	});
 
 	// Unsubscribe to a channel
-	socket.on('unsubscribe', ({ channel }) => {
-		socket.leave(channel);
+	socket.on('unsubscribe', ({ channelId }) => {
+		socket.leave(channelId);
 	});
 });
 

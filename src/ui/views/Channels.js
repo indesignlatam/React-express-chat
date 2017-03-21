@@ -39,7 +39,7 @@ export default class Channels extends Component {
 				});
 			}
 		}).then((name) => {
-			ChannelsAPI.createChannel({name, user: this.props.user}).then((response) => {
+			ChannelsAPI.createChannel({name, userId: this.props.user._id}).then((response) => {
 				const channel = response.data;
 
 				let { channels } = this.state;
@@ -69,10 +69,14 @@ export default class Channels extends Component {
 	}
 
 	getChannels(all = false){
-		ChannelsAPI.getChannels({user: this.props.user, all}).then((response) => {
+		ChannelsAPI.getChannels({userId: this.props.user._id, all}).then((response) => {
 			const channels = response.data;
-			this.props.onChannelSelect(channels[0]);
 			this.setState({channels: channels});
+
+			// If there is no selected channel select the firstone
+			if(!this.props.selectedChannel){
+				this.props.onChannelSelect(channels[0]);
+			}
 		});
 	}
 
@@ -138,7 +142,7 @@ export default class Channels extends Component {
 }
 
 Channels.propTypes = {
-	user: React.PropTypes.string,
+	user: React.PropTypes.object,
 	socket: React.PropTypes.object,
 	selectedChannel: React.PropTypes.object,
 	onChannelSelect: React.PropTypes.func

@@ -4,7 +4,7 @@ import Channels from './Channels.js';
 
 
 const schema = Schema({
-	user: String,
+	user: Object,
 	text: String,
 	channel: String,
 	createdAt: Date
@@ -36,7 +36,10 @@ export function getInChannel({ channel, userId }, callback = () => null) {
 
 export function create(data, callback = () => null) {
 	// TODO: Validate params
-	const query = Channels.where({ _id: data.channel, participants: { $in: [data.user] } });
+	data.text = data.text.trim();
+	data.createAt = new Date();
+
+	const query = Channels.where({ _id: data.channel, participants: { $in: [data.user._id] } });
 
 	// Check if user is in the channel participants
 	query.findOne((error, channel) => {
