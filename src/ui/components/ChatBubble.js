@@ -7,6 +7,12 @@ export default class ChatBubble extends Component {
 		super(props);
 	}
 
+	selectUser(event) {
+		event.preventDefault();
+
+		this.props.onClickUser(this.props.message.user);
+	}
+
 	messageType() {
 		if(this.props.self._id === this.props.message.user._id){
 			return 'self';
@@ -64,10 +70,11 @@ export default class ChatBubble extends Component {
 		return (
 			<li className={this.messageType()}>
 				<div className="msg">
-					<div className="user">
+					<a 	className="user" href="#"
+						onClick={(event) => this.selectUser(event)}>
 						{this.senderName()}
 						{this.renderButtons()}
-					</div>
+					</a>
 					{this.renderImage()}
 					<p>{this.props.message.text}</p>
 					<time>{moment(this.props.message.createdAt).fromNow()}</time>
@@ -81,6 +88,7 @@ export default class ChatBubble extends Component {
 ChatBubble.propTypes = {
 	self: React.PropTypes.object.isRequired,
 	message: React.PropTypes.object.isRequired,
+	onClickUser: React.PropTypes.func,
 	onEditMessage: React.PropTypes.func,
 	onRemoveMessage: React.PropTypes.func
 };
